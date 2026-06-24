@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RentFairly – Fair Rent Split Calculator for Roommates</title>
+  <meta name="description" content="Split rent fairly with roommates based on room size, natural light, private bathroom & more. Free, no sign-up, results in 2 minutes." />
+  <link rel="canonical" href="https://rentfairly.app/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">🏠</div>
+      Rent<span class="accent">Fairly</span>
+    </a>
+    <nav>
+      <a href="index.html#calculator">Calculator</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">About</a>
+      <button class="dark-toggle" onclick="toggleDark()" title="Toggle dark mode">🌙</button>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+
+    <!-- Single clean trust bar — NO duplicates -->
+    <div class="trust-row">
+      <div class="trust-item"><span class="trust-icon">✓</span><span>100% Free</span></div>
+      <div class="trust-sep"></div>
+      <div class="trust-item"><span class="trust-icon">✓</span><span>No Sign-Up</span></div>
+      <div class="trust-sep"></div>
+      <div class="trust-item"><span class="trust-icon">✓</span><span>No Download</span></div>
+      <div class="trust-sep"></div>
+      <div class="trust-item"><span class="trust-icon">⚡</span><span>Instant Results</span></div>
+      <div class="trust-sep"></div>
+      <div class="trust-item"><span class="trust-icon">📤</span><span>Shareable Link</span></div>
+    </div>
+
+    <h1>Split Rent <em>Fairly</em><br/>With Your Roommates</h1>
+    <p class="hero-sub">Enter your rooms below and get a fair split in 2 minutes — based on size, light, bathroom & more.</p>
+
+    <a href="#calculator" class="btn-primary hero-btn">Calculate My Fair Share ↓</a>
+
+    <div class="hero-stats">
+      <div><strong>200K+</strong><span>Monthly Searches</span></div>
+      <div><strong>Free</strong><span>Always & Forever</span></div>
+      <div><strong>2 min</strong><span>To Get Results</span></div>
+      <div><strong>2–5</strong><span>Roommates Supported</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="container ad-slot">
+  <div class="ad-label">Advertisement</div>
+  <div class="ad-placeholder">Ad Space — 728×90</div>
+</div>
+
+<section class="calculator-section" id="calculator">
+  <div class="container">
+    <div class="progress-bar">
+      <div class="step active" id="step-indicator-1"><div class="step-dot">1</div><span>Rent</span></div>
+      <div class="step-line"></div>
+      <div class="step" id="step-indicator-2"><div class="step-dot">2</div><span>Rooms</span></div>
+      <div class="step-line"></div>
+      <div class="step" id="step-indicator-3"><div class="step-dot">3</div><span>Results</span></div>
+    </div>
+
+    <div class="calc-card" id="step-1">
+      <h2>What is your total monthly rent?</h2>
+      <p class="step-desc">Enter the full amount on your lease. We will divide it fairly — not equally.</p>
+      <div class="input-group">
+        <label>Total monthly rent ($)</label>
+        <input type="number" id="total-rent" placeholder="e.g. 2400" min="0" />
+      </div>
+      <div class="input-group mt-16">
+        <label>Number of roommates</label>
+        <select id="num-roommates">
+          <option value="2">2 roommates</option>
+          <option value="3">3 roommates</option>
+          <option value="4">4 roommates</option>
+          <option value="5">5 roommates</option>
+        </select>
+      </div>
+      <div style="margin-top:28px;">
+        <button class="btn-primary" onclick="goToStep2()">Next: Describe Each Room →</button>
+      </div>
+    </div>
+
+    <div class="calc-card hidden" id="step-2">
+      <h2>Describe each room</h2>
+      <p class="step-desc">Be honest — the more accurate you are, the fairer the result for everyone.</p>
+      <div id="rooms-container"></div>
+      <div class="step2-actions">
+        <button class="btn-ghost" onclick="goToStep1()">← Back</button>
+        <button class="btn-primary" onclick="calculateResults()">Calculate Fair Split →</button>
+      </div>
+    </div>
+
+    <div class="calc-card hidden" id="step-3">
+      <h2>🎉 Your Fair Rent Split</h2>
+      <p class="step-desc">Based on each room's real features — not a blind equal split.</p>
+      <div class="ad-slot-inline">
+        <div class="ad-label">Advertisement</div>
+        <div class="ad-placeholder">Ad Space — 320×100</div>
+      </div>
+      <div id="results-container"></div>
+      <div class="chart-wrap">
+        <canvas id="pie-chart" width="320" height="320"></canvas>
+      </div>
+      <div class="share-section">
+        <h3>📤 Share with your roommates</h3>
+        <p>Send them this link — they will see the exact same breakdown instantly</p>
+        <div class="share-btns">
+          <button class="btn-primary" onclick="shareResult()">📋 Copy Share Link</button>
+          <button class="btn-secondary" onclick="shareTwitter()">𝕏 Post on Twitter</button>
+          <button class="btn-secondary" onclick="printResult()">🖨️ Print / PDF</button>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:20px;">
+        <button class="btn-ghost" onclick="startOver()">← Start Over</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container ad-slot">
+  <div class="ad-label">Advertisement</div>
+  <div class="ad-placeholder">Ad Space — 728×90</div>
+</div>
+
+<section class="why-section">
+  <div class="container">
+    <p class="section-eyebrow">Why RentFairly Exists</p>
+    <h2>Equal Split Sounds Fair.<br/>It Almost Never Is.</h2>
+    <p class="section-sub">The most upvoted roommate post on Reddit: <em>"I have the smallest room, one window facing a dumpster, no closet — and I pay the same rent as my roommate with an en-suite and a walk-in closet."</em></p>
+    <div class="features-grid">
+      <div class="feature-card"><span class="feature-icon">📐</span><h3>Room Size</h3><p>Bigger rooms mean more space. They should cost more.</p></div>
+      <div class="feature-card"><span class="feature-icon">🚿</span><h3>Private Bathroom</h3><p>Worth $100–300/month. Our algorithm accounts for it.</p></div>
+      <div class="feature-card"><span class="feature-icon">☀️</span><h3>Natural Light</h3><p>Bright south-facing vs dark window? Not equal value.</p></div>
+      <div class="feature-card"><span class="feature-icon">🔇</span><h3>Noise Level</h3><p>Street-facing or near the kitchen? You pay less.</p></div>
+      <div class="feature-card"><span class="feature-icon">🗄️</span><h3>Closet Space</h3><p>Walk-in closet vs no closet is a real difference.</p></div>
+      <div class="feature-card"><span class="feature-icon">🔗</span><h3>Instant Share</h3><p>One link to your roommates. No account, no friction.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="container ad-slot">
+  <div class="ad-label">Advertisement</div>
+  <div class="ad-placeholder">Ad Space — 728×90</div>
+</div>
+
+<section class="faq-section" id="faq">
+  <div class="container">
+    <p class="section-eyebrow">Questions</p>
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How does the algorithm work?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Each room gets a score: room size (50%), natural light (15%), noise level (15%), private bathroom (12%), closet size (5%), extras (3%). Each room's share of the total score becomes its share of rent.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is it really free?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Yes. 100% free, forever. No account, no email, no credit card. We are supported by non-intrusive ads.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I share results with roommates?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Click "Copy Share Link" after calculating. It creates a unique URL with your results encoded directly in it — no server, no login needed to view it.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What if a roommate disagrees?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Have each roommate score the rooms independently and average the results. Hard to argue with a process everyone participated in.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Does it work for more than 2 roommates?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Yes — supports 2 to 5 roommates in the same apartment.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is my data stored?<span class="faq-icon">+</span></button>
+        <div class="faq-a">No. Everything runs in your browser. Nothing is sent to our servers. The share link encodes your data in the URL itself.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a href="index.html" class="logo"><div class="logo-mark">🏠</div>Rent<span class="accent">Fairly</span></a>
+      <p>The fairest way to split rent with roommates.</p>
+    </div>
+    <div class="footer-hr"></div>
+    <div class="footer-links">
+      <a href="index.html#calculator">Calculator</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">About</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+    <p class="footer-copy">© 2026 RentFairly.app — Free rent split calculator for roommates</p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
